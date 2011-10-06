@@ -1,0 +1,106 @@
+<html>
+<head>
+<style type="text/css">
+html, body { font-family: Helvetica,Arial, default; color: #333; font-size: 12px;}
+a { color: #36c; cursor: pointer; text-decoration: none; outline:none }
+
+.status { background-color: #f9f3c9; padding: 10px; border:1px solid #c9c399; width:350px; }
+.status-text.approved {color: #00681c; font-weight: bold;}
+
+.actions { margin-top: 10px; }
+.action-approve { font-weight: bold; }
+.actions a { margin-right: 10px; }
+
+.button { display: inline-block; min-width: 10px; border: 1px solid gainsboro; text-align: center; color: #666; height:2em; padding: 0 8px; line-height:2em; border-radius:2px; background-color:whiteSmoke; background-image:-webkit-gradient(linear,left top,left bottom,from(#f5f5f5),to(#f1f1f1)); background-image:-moz-linear-gradient(top,#f5f5f5,#f1f1f1)}
+.button:hover { border:1px solid #c6c6c6;color:#333;background-color:#f8f8f8;background-image:-webkit-gradient(linear,left top,left bottom,from(#f8f8f8),to(#f1f1f1));background-image:-webkit-linear-gradient(top,#f8f8f8,#f1f1f1);-webkit-box-shadow:0 1px 1px rgba(0,0,0,0.1);background-image:-moz-linear-gradient(top,#f8f8f8,#f1f1f1);}
+</style>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+var rbId = null;
+var status = null;
+
+$(initialize);
+
+function initialize() {
+  var bg = chrome.extension.getBackgroundPage();
+  bg.getRbId(function(id) {
+    rbId = id;
+    console.log("RB ID:", rbId);
+
+    bg.reviewStatus(rbId, function(data) {
+      console.log("RESULT", data);
+      status = data.status;
+      if (status == "unauthorized") {
+        renderStatus("Unauthorized; please log in.");
+      } else if (status == "approved") {
+        renderStatus("Approved!", "approved");
+      } else if (status == "unapproved") {
+        renderStatus("Unapproved");
+      }
+      renderActions();
+    });
+  });
+}
+
+function showDiffs() {
+  chrome.extension.getBackgroundPage().showDiffs(rbId);
+}
+
+function showReview() {
+  chrome.extension.getBackgroundPage().showReview(rbId);
+}
+
+function login() {
+  chrome.extension.getBackgroundPage().login(rbId);
+}
+
+function setup() {
+  chrome.extension.getBackgroundPage().setup();
+}
+
+function approveReview() {
+  renderStatus("Approving...");
+  chrome.extension.getBackgroundPage().approveRb(rbId, function(success) {
+    renderStatus("Approved!", "approved");
+  });
+}
+
+function renderStatus(text, opt_class) {
+  $(".status-text").attr("class", "status-text");
+  $(".status-text").text(text);
+  if (opt_class) {
+    $(".status-text").addClass(opt_class);
+  }
+}
+
+function renderActions() {
+  $(".actions").hide();
+  if (status == "unauthorized") {
+    $(".actions.unauthorized").show();
+  } else if (status == "unsetup") {
+    $(".actions.unsetup").show();
+  } else {
+    $(".actions.norm").show();
+  }
+}
+
+</script>
+</head>
+<body>
+<div class="status">
+  <strong>Status:</strong> <span class="status-text">Loading...</span>
+</div>
+<div class="actions norm" style="display:none">
+  <a class="button action-approve" href="javascript:approveReview(); void 0;">Quick Approve</a>
+  <a class="button action-view" href="javascript:showReview();void 0;">View Review</a>
+  <a class="button action-diff" href="javascript:showDiffs();void 0;">View Diffs</a>
+</div>
+<div class="actions unauthorized" style="display:none;">
+  <a class="button action-login" href="javascript:login(); void 0;">Log into ReviewBoard</a>
+</div>
+<div class="actions unsetup" style="display:none;">
+  <a class="button action-setup" href="javascript:setup(); void 0;">Setup ReviewBoard extension</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<html>
+<head>
+<style type="text/css">
+html, body { font-family: Helvetica,Arial, default; color: #333; font-size: 12px;}
+a { color: #36c; cursor: pointer; text-decoration: none; outline:none }
+</style>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+function save() {
+  var val = $("#url").val();
+  localStorage['rbUrl'] = val;
+  return;
+  if (!(val.indexOf("http://") == 0 || val.indexOf("https://") == 0)) {
+    alert("Please enter a valid URL");
+    return false;
+  }
+  if (val.lastIndexOf("/") == (val.length - 1)) {
+    val = val.substring(0, val.length - 1);
+  }
+
+  localStorage['rbUrl'] = val;
+  alert("Saved!");
+  return true;
+}
+
+function load() {
+  $("#url").val(localStorage['rbUrl']);
+}
+
+$(load);
+</script>
+</head>
+<body>
+<form onsubmit="save()">
+  Reviewboard URL: <input id="url"/>
+  <button action="submit">Save</button>
+</form>
+</body>
+</html>
