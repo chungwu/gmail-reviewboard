@@ -25,13 +25,15 @@ function contentHandler(request, sender, callback) {
 
 function showRbAction(tabId, rbId) {
   tabRbId[tabId] = rbId;
-  chrome.pageAction.show(tabId);
   reviewStatus(rbId, function(status) {
     if (status.status == "unsetup" || status.status == "unauthorized") {
       chrome.pageAction.setIcon({tabId:tabId, path:"icons/reviewboard-error.png"});
+    } else if (status.status == "approved") {
+      chrome.pageAction.setIcon({tabId:tabId, path:"icons/reviewboard-approved.png"});      
     } else {
       chrome.pageAction.setIcon({tabId:tabId, path:"icons/reviewboard.png"});
     }
+    chrome.pageAction.show(tabId);
   });
 }
 
