@@ -8,8 +8,6 @@ a { color: #36c; cursor: pointer; text-decoration: none; outline:none }
 <script type="text/javascript">
 function save() {
   var val = $("#url").val();
-  localStorage['rbUrl'] = val;
-  return;
   if (!(val.indexOf("http://") == 0 || val.indexOf("https://") == 0)) {
     alert("Please enter a valid URL");
     return false;
@@ -19,7 +17,7 @@ function save() {
   }
 
   localStorage['rbUrl'] = val;
-  alert("Saved!");
+  alert("Saved! You should reload your Gmail tabs to reflect the changes.");
   return true;
 }
 

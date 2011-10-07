@@ -17,13 +17,22 @@ function contentHandler(request, sender, callback) {
     approveRb(request.rbId, callback);
   } else if (request.type == "rbUrl") {
     callback(rbUrl());
+  } else if (request.type == "showSetup") {
+    chrome.pageAction.show(sender.tab.id);
+    chrome.pageAction.setIcon({tabId:sender.tab.id, path:"icons/reviewboard-error.png"});
   }
 }
 
 function showRbAction(tabId, rbId) {
   tabRbId[tabId] = rbId;
   chrome.pageAction.show(tabId);
-  chrome.extension.sendRequest({type: "onRbIdChanged", rbId:rbId});
+  reviewStatus(rbId, function(status) {
+    if (status.status == "unsetup" || status.status == "unauthorized") {
+      chrome.pageAction.setIcon({tabId:tabId, path:"icons/reviewboard-error.png"});
+    } else {
+      chrome.pageAction.setIcon({tabId:tabId, path:"icons/reviewboard.png"});
+    }
+  });
 }
 
 function hideRbAction(tabId) {

@@ -10,7 +10,7 @@ function hideRbAction() {
 }
 
 function showNeedSetup() {
-  alert("You need to set this up yo");
+  chrome.extension.sendRequest({type: "showSetup"});
 }
 
 function viewDiff() {

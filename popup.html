@@ -37,6 +37,8 @@ function initialize() {
         renderStatus("Approved!", "approved");
       } else if (status == "unapproved") {
         renderStatus("Unapproved");
+      } else if (status == "unsetup") {
+        renderStatus("You need to set up the ReviewBoard extension first!");
       }
       renderActions();
     });
