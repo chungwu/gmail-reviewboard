@@ -30,6 +30,17 @@ $(load);
 </head>
 <body>
 <h1>Gmail Reviewboard Extension Setup</h1>
+<div>
+When your Gmail is showing an email from ReviewBoard,
+<ul>
+  <li>A PageAction is displayed, where you can approve the review directly.</li>
+  <li>You can press 'w' to open the review diffs page.</li>
+  <li>You can press 'W' to approve the review.</li>
+</ul>
+</div>
+<div>
+For this to work, we need to first know where your ReviewBoard instance is hosted.  Please enter your ReviewBoard URL prefix below:
+</div>
 <form onsubmit="save()">
   <div>
     Reviewboard URL: <input id="url" style="width:400px"/>
