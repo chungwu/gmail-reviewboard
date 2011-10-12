@@ -1,4 +1,3 @@
-console.log("I AM CONTENT");
 function showRbAction(id) {
   rbId = id;
   chrome.extension.sendRequest({type: "showRbAction", rbId: id});
@@ -40,7 +39,6 @@ var rbUrl = null;
 var re_rgid = new RegExp(".*/r/(\\d+)/.*");
 
 function initialize() {
-  console.log("INITIALIZING");
   getRbUrl(function(url) { 
     rbUrl = url; 
     if (!rbUrl) {
@@ -77,15 +75,11 @@ function extractRbId() {
 }
 
 function checkRb() {
-  console.log("Hash changed: ", window.location.hash);
   var id = extractRbId();
-  console.log("Extracted", id);
   if (id != rbId) {
     if (id) {
-      console.log("FOUND ID", id);
       showRbAction(id);
     } else {
-      console.log("oops, hiding");
       hideRbAction();
     }
   }

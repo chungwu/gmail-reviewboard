@@ -26,10 +26,8 @@ function initialize() {
   var bg = chrome.extension.getBackgroundPage();
   bg.getRbId(function(id) {
     rbId = id;
-    console.log("RB ID:", rbId);
 
     bg.reviewStatus(rbId, function(data) {
-      console.log("RESULT", data);
       status = data.status;
       if (status == "unauthorized") {
         renderStatus("Unauthorized; please log in.");

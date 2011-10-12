@@ -4,9 +4,6 @@ tabRbId = {}
 tabRbStatus = {}
 
 function contentHandler(request, sender, callback) {
-  console.log("GOT CONTENT REQUEST", request);
-  console.log("__Sender", sender);
-  console.log("__Callback", callback);
   if (request.type == "showRbAction") {
     showRbAction(sender.tab.id, request.rbId);
   } else if (request.type == "hideRbAction") {
@@ -44,7 +41,6 @@ function hideRbAction(tabId) {
 }
 
 function getRbId(callback) {
-  console.log("Asked to get rbId...");
   chrome.tabs.getSelected(null, function(tab) {
     callback(tabRbId[tab.id]);
   });
@@ -53,14 +49,13 @@ function getRbId(callback) {
 function approveRb(rbId, callback) {
   // callback receives true for success, false for failure
   var url = rbUrl() + '/api/json/reviewrequests/' + rbId + '/reviews/draft/publish/';
-  console.log("POSTING TO", url);
   $.post(url, {shipit:1}, function(data) {
     if (data && data.stat == "ok") {
       callback(true);
     } else if (data.stat == "fail" && data.err.code == 103) {
       login(rbId);
     } else {
-      console.log("FAILED TO APPROVE", data);
+      console.log("GMRB: FAILED TO APPROVE", data);
       callback(false);
     }
   }, "json");
@@ -82,13 +77,11 @@ function reviewStatus(rbId, callback) {
     var approved = false;
     var reviews = data.reviews;
     var reviewers = [];
-    console.log("Found reviews", reviews.length);
     for (var i=0; i<reviews.length; i++) {
       var review = reviews[i];
       if (review.ship_it) {
         approved = true;
       }
-      console.log(review.user.fullname + ": " + review.ship_it);
       reviewers.push({name: review.user.fullname, shipit: review.ship_it});
     }
     var status = approved ? "approved" : "unapproved";
@@ -97,7 +90,7 @@ function reviewStatus(rbId, callback) {
     callback(result);
   };
   var onError = function(xhr, textStatus, errorThrown) {
-    console.log("ERROR STATUS", xhr.status);
+    console.log("GMRB: ERROR STATUS", xhr.status);
     if (xhr.status == 401 || xhr.status == 405) {
       var result = {status: "unauthorized"};
       tabRbStatus[rbId] = result;
@@ -151,12 +144,9 @@ function rbUrl() {
 
 function getPopup() {
   var url = chrome.extension.getURL("popup.html");
-  console.log("Popup url", url);
   var views = chrome.extension.getViews();
-  console.log("views", views);
   for (var i=0; i<views.length; i++) {
     var view = views[i];
-    console.log("view url", view.location.href);
     if (view.location.href == url) {
       return view;
     }
