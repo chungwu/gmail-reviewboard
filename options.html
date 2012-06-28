@@ -5,28 +5,7 @@ html, body { font-family: Helvetica,Arial, default; color: #333; font-size: 12px
 a { color: #36c; cursor: pointer; text-decoration: none; outline:none }
 </style>
 <script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript">
-function save() {
-  var val = $("#url").val();
-  if (!(val.indexOf("http://") == 0 || val.indexOf("https://") == 0)) {
-    alert("Please enter a valid URL");
-    return false;
-  }
-  if (val.lastIndexOf("/") == (val.length - 1)) {
-    val = val.substring(0, val.length - 1);
-  }
-
-  localStorage['rbUrl'] = val;
-  alert("Saved! You should reload your Gmail tabs to reflect the changes.");
-  return true;
-}
-
-function load() {
-  $("#url").val(localStorage['rbUrl']);
-}
-
-$(load);
-</script>
+<script type="text/javascript" src="js/options.js"></script>
 </head>
 <body>
 <h1>Gmail Reviewboard Extension Setup</h1>
@@ -41,7 +20,7 @@ When your Gmail is showing an email from ReviewBoard,
 <div>
 For this to work, we need to first know where your ReviewBoard instance is hosted.  Please enter your ReviewBoard URL prefix below:
 </div>
-<form onsubmit="save()">
+<form class="options-form">
   <div>
     Reviewboard URL: <input id="url" style="width:400px"/>
   </div>

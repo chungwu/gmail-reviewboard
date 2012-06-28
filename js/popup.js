@@ -4,6 +4,11 @@ var status = null;
 $(initialize);
 
 function initialize() {
+  $(".action-approve").click(approveReview);
+  $(".action-view").click(showReview);
+  $(".action-diff").click(showDiffs);
+  $(".action-login").click(login);
+  $(".action-setup").click(setup);
   var bg = chrome.extension.getBackgroundPage();
   bg.getRbId(function(id) {
     rbId = id;
