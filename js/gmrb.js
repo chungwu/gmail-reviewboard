@@ -46,7 +46,7 @@ function initialize() {
       return;
     }
     $(window).hashchange(function() {
-      setTimeout(checkRb, 500);
+      setTimeout(checkRb, 100);
     });
     setTimeout(function() {
       $("#canvas_frame").contents().keypress(handleKeyPress);
@@ -65,7 +65,8 @@ function extractRbIdFromUrl(url) {
 
 function extractRbId() {
   var $canvas = $("#canvas_frame").contents();
-  var $anchor = $("a[href*='" + rbUrl + "']", $canvas);
+  var $thread = $("div[role='main']", $canvas);
+  var $anchor = $("a[href*='" + rbUrl + "']", $thread);
   if ($anchor.length > 0) {
     var url = $anchor.attr("href");
     return extractRbIdFromUrl(url);
