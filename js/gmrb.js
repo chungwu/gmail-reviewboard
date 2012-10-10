@@ -49,7 +49,7 @@ function initialize() {
       setTimeout(checkRb, 100);
     });
     setTimeout(function() {
-      $("#canvas_frame").contents().keypress(handleKeyPress);
+      $("body").keypress(handleKeyPress);
       checkRb();
     }, 3000);
   });
@@ -64,8 +64,9 @@ function extractRbIdFromUrl(url) {
 }
 
 function extractRbId() {
-  var $canvas = $("#canvas_frame").contents();
-  var $thread = $("div[role='main']", $canvas);
+  //var $canvas = $("#canvas_frame").contents();
+  //var $thread = $("div[role='main']", $canvas);
+  var $thread = $("div[role='main']");
   var $anchor = $("a[href*='" + rbUrl + "']", $thread);
   if ($anchor.length > 0) {
     var url = $anchor.attr("href");
