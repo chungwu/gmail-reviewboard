@@ -2,7 +2,7 @@
   "name": "Gmail Reviewboard Plugin",
   "version": "1.0",
   "manifest_version": 2,
-  "description": "Extension for adding basic ReviewBoard integration to Gmail.  View/approve from ReviewBoard page actions, and 'w' shortcut to go to review diff, and 'W' to approve.",
+  "description": "Extension for adding basic ReviewBoard integration to Gmail.",
   "background": {
     "page": "background.html"
   },
